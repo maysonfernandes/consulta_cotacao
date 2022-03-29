@@ -1,10 +1,13 @@
+# Importando as Bibliotecas
 from pandas_datareader import data as web
 import requests
 import pandas as pd
 from datetime import date
 
+# Criando a lista dos ticker das ações 
 tickers = ['ITSA4', 'OIBR4', 'CASH3']
 
+# Criando o DataFrame com as informaões básicas
 lista_2 = [['ITSA4', 101.0, 11.78, "12/30/2020"],
            ['OIBR4', 100.0, 3.05, "01/06/2021"],
            ['CASH3', 1.0, 5.00, "10/15/2021"]]
@@ -12,6 +15,7 @@ dados = pd.DataFrame(lista_2)
 dados.columns = ['Ticker', 'Quantidade', 'VL_Compra', 'Data Compra']
 dados
 
+# Definindo a função buscar cotação
 def busca_cotacao():
     
     cotacao = []
@@ -20,7 +24,7 @@ def busca_cotacao():
     lista = ['Ticker', 'Data Compra', 'Data cotação', 'Abertura', 'Fechamento', 'Variação', 'Valor Pago', 'Quantidade', 'Lucro/Prejuízo', '% Lucro/Prejuízo']
     retorno = []
     
-    # Buscando as cotações e inserindo no DataFrame
+    # Buscando as cotações e inserindo na lista retorno
     for ticker in tickers:
         print(f'Buscando a Cotação de: {ticker}')
         cotacao.append(web.DataReader(f'{ticker}.SA', data_source = 'yahoo', start = '01/01/2022' , end = hoje))
@@ -29,14 +33,12 @@ def busca_cotacao():
         mes = dados[['Ticker', 'Data Compra']].set_index('Ticker').loc[ticker][0].split('/')[0]
         dia = dados[['Ticker', 'Data Compra']].set_index('Ticker').loc[ticker][0].split('/')[1]
         ano = dados[['Ticker', 'Data Compra']].set_index('Ticker').loc[ticker][0].split('/')[2]
-                
         data_compra = (f'{dia}/{mes}/{ano}')
         
         # Formatando data da cotação
         ano = hoje.year
         mes = hoje.month
         dia = hoje.day
-        
         data_cotacao = (f'{dia}/{mes}/{ano}')
         
         cotacao_abertura = cotacao[cont].Close[-2].round(2)
@@ -59,7 +61,9 @@ def busca_cotacao():
 
     return planilha
 
+# Chamando a função e armazenando na variável planilha
 planilha = busca_cotacao()
-hoje = date.today()
+
+# Exportando o DataFrame para um Arquivo .csv com a data da cotação no nome do arquivo
 planilha.to_csv(f'cotacao_{hoje.day}-{hoje.month}-{hoje.year}.csv', encoding='utf-8')
 planilha
