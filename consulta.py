@@ -8,9 +8,9 @@ from datetime import date
 tickers = ['ITSA4', 'OIBR4', 'CASH3']
 
 # Criando o DataFrame com as informaões básicas
-lista_2 = [['ITSA4', 101.0, 11.78, "12/30/2020"],
-           ['OIBR4', 100.0, 3.05, "01/06/2021"],
-           ['CASH3', 1.0, 5.00, "10/15/2021"]]
+lista_2 = [['ITSA4', 100.0, 10.80, "03/25/2022"],
+           ['OIBR4', 100.0, 1.38, "03/25/2022"],
+           ['CASH3', 100.0, 2.49, "03/25/2022"]]
 dados = pd.DataFrame(lista_2)
 dados.columns = ['Ticker', 'Quantidade', 'VL_Compra', 'Data Compra']
 dados
